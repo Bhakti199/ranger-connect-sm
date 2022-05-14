@@ -1,0 +1,33 @@
+.my-feed-page {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+  gap: 10px;
+}
+@media screen and (max-width: 1100px) {
+  .search-column-display {
+    display: none;
+  }
+}
+@media screen and (max-width: 800px) {
+  .my-feed-page {
+    display: block;
+  }
+  .sidebar-close {
+    position: fixed;
+    transform: translateX(-18rem);
+    transition: transform 250ms ease-in-out;
+  }
+  .sidebar-open {
+    position: fixed;
+    transform: translateX(0);
+    transition: transform 250ms ease-in-out;
+  }
+  .sidebar-mbl {
+    padding-top: 1rem;
+    z-index: 2;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(187, 176, 232, 0.7);
+  }
+}
