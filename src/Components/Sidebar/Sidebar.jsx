@@ -17,6 +17,7 @@ export const Sidebar = ({ setSidebarOpen }) => {
           alt=""
           className="icon"
         />
+
         <BsX
           onClick={() => setSidebarOpen(false)}
           size={30}
