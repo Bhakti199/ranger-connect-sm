@@ -1,0 +1,107 @@
+.sidebar {
+  padding: 1rem;
+  background-color: var(--white-color);
+  width: 14rem;
+  border-radius: 1.5rem;
+  height: 92vh;
+  z-index: 2;
+}
+.icon {
+  height: 2.5rem;
+  width: 2.5rem;
+  margin-bottom: 1.3rem;
+}
+.sidebar-items-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.7rem;
+  padding: 1rem 0;
+}
+.sidebar-item {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  font-size: 1.3rem;
+}
+.sidebar-post-btn {
+  border: none;
+  background: linear-gradient(180deg, var(--pink-light), var(--pink-dark));
+  color: var(--white-color);
+  font-size: 1.5rem;
+  padding: 7px 3.5rem;
+  border-radius: 1rem;
+  margin: 1rem 0;
+}
+.sidebar-post-btn-mbl {
+  border: none;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  padding: 7px;
+  background: linear-gradient(180deg, var(--pink-light), var(--pink-dark));
+}
+.sidebar-chips-container {
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.sidebar-chips {
+  padding: 10px;
+  width: fit-content;
+  border-radius: 1rem;
+  background-color: rgba(187, 176, 232, 0.4);
+}
+.sidebar-search-icon {
+  display: none;
+}
+.logo-tab {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.sidebar-cancel {
+  display: none;
+}
+@media screen and (max-width: 1300px) {
+  .sidebar-item-text,
+  .sidebar-menu-text,
+  .sidebar-chips-container,
+  .sidebar-post-btn {
+    display: none;
+  }
+  .sidebar-item {
+    font-size: 1.7rem;
+    color: var(--blue-dark);
+  }
+  .sidebar {
+    width: fit-content;
+  }
+  .sidebar-post-btn-mbl {
+    display: flex;
+  }
+}
+@media screen and (max-width: 1100px) {
+  .sidebar-search-icon {
+    display: flex;
+  }
+}
+@media screen and (max-width: 800px) {
+  .sidebar-item-text,
+  .sidebar-menu-text,
+  .sidebar-chips-container,
+  .sidebar-post-btn {
+    display: flex;
+  }
+  .sidebar-cancel {
+    display: flex;
+  }
+  .sidebar-item {
+    font-size: 1.2rem;
+    color: black;
+  }
+  .sidebar-post-btn-mbl {
+    display: none;
+  }
+}
