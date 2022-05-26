@@ -3,7 +3,7 @@
   padding: 1rem;
   border-radius: 1rem;
   background-color: rgba(187, 176, 232, 0.1);
-  max-height: 25rem;
+  height: auto;
   display: flex;
   gap: 10px;
   justify-content: space-around;
@@ -37,7 +37,8 @@
   background-color: rgba(187, 176, 232, 0.2);
   padding: 7px;
   border-radius: 1rem;
-  width: fit-content;
+  gap: 3px;
+  width: auto;
 }
 .comment-tab-input {
   width: 22rem;
@@ -58,6 +59,9 @@
   background-color: rgba(187, 176, 232, 0.4);
 }
 @media screen and (max-width: 800px) {
+  .postcard {
+    padding: 10px;
+  }
   .postcard-main {
     width: 75%;
   }
@@ -71,6 +75,6 @@
 }
 @media screen and (max-width: 550px) {
   .comment-tab-input {
-    width: 11rem;
+    width: 7.5rem;
   }
 }

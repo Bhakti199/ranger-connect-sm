@@ -1,42 +1,72 @@
-import React from "react";
+import React, { useState } from "react";
 import "./PostCard.css";
-import { BsEmojiSmile, BsHeart } from "react-icons/bs";
+import { BsEmojiSmile, BsHeart, BsBookmark, BsTrash } from "react-icons/bs";
 import { AiOutlineMessage } from "react-icons/ai";
-export const PostCard = () => {
+import { FiSend, FiEdit } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
+import { CreatePost } from "../index";
+import { deletePost } from "../../redux/PostSlice/PostSlice";
+
+export const PostCard = ({ post }) => {
+  const [openCreatePost, setOpenCreatePost] = useState(false);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+  const deletePostHandler = (postId) => {
+    dispatch(deletePost(postId));
+  };
   return (
-    <div className="postcard">
-      <div className="post-profile">
-        <img
-          src="https://res.cloudinary.com/bhakti1801/image/upload/v1652444433/model8_rvnzuo.jpg"
-          alt=""
-          className="responsive-img feed-profile-img"
-        />
-      </div>
-      <div className="postcard-main">
-        <div className="postcard-username">Nayani</div>
-        <div className="postcard-main-text">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus,
-          commodi ut eaque libero optio voluptas quibusdam molestias nesciunt
-          iste blanditiis labore saepe quidem nulla nobis aspernatur quo
-          incidunt, quae iure! Lorem ipsum dolor sit amet consectetur
-          adipisicing elit. Veniam enim praesentium cumque ullam hic laborum
-          deleniti corporis maxime unde, dignissimos expedita, voluptatem
-          voluptatibus explicabo similique consequuntur doloribus debitis nihil
-          a.
+    <>
+      <div className="postcard">
+        <div className="post-profile">
+          <img
+            src={
+              post.user.photoUrl === ""
+                ? "https://res.cloudinary.com/bhakti1801/image/upload/v1652444433/model8_rvnzuo.jpg"
+                : post.user.photoUrl
+            }
+            alt=""
+            className="responsive-img feed-profile-img"
+          />
         </div>
-        <div className="postcard-footer">
-          <div className="postcard-comment-tab">
-            <input className="comment-tab-input" placeholder="Add comment..." />
-            <BsEmojiSmile size={21} color="var(--grey-color)" />
+        <div className="postcard-main">
+          <div className="postcard-username">
+            {post.user.firstName} {post.user.lastName}
           </div>
-          <div className="postcard-icon">
-            <BsHeart />
-          </div>
-          <div className="postcard-icon">
-            <AiOutlineMessage />
+          <div className="postcard-main-text"> {post.postInput} </div>
+          <div className="postcard-footer">
+            <div className="postcard-comment-tab">
+              <BsEmojiSmile size={21} color="var(--grey-color)" />
+              <input
+                className="comment-tab-input"
+                placeholder="Add comment..."
+              />
+              <FiSend size={21} color="var(--grey-color)" />
+            </div>
+            <div className="postcard-icon">
+              <BsHeart />
+            </div>
+            <div className="postcard-icon">
+              <AiOutlineMessage />
+            </div>
+            <div className="postcard-icon">
+              <BsBookmark />
+            </div>
+            {post.user.userName === user.userName && (
+              <>
+                <div className="postcard-icon">
+                  <FiEdit onClick={() => setOpenCreatePost(true)} />
+                </div>
+                <div className="postcard-icon">
+                  <BsTrash onClick={() => deletePostHandler(post.id)} />
+                </div>
+              </>
+            )}
           </div>
         </div>
-      </div>
-    </div>
+      </div>{" "}
+      {openCreatePost && (
+        <CreatePost setOpenCreatePost={setOpenCreatePost} post={post} />
+      )}
+    </>
   );
 };

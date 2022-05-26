@@ -9,12 +9,10 @@ export const MyFeedPage = () => {
       <div
         className={` ${sidebarOpen && "sidebar-mbl"}`}
         onClick={() => setSidebarOpen(false)}
-      >
-        <div className={`${sidebarOpen ? "sidebar-open" : "sidebar-close"}`}>
-          <Sidebar setSidebarOpen={setSidebarOpen} />
-        </div>
+      ></div>
+      <div className={`${sidebarOpen ? "sidebar-open" : "sidebar-close"}`}>
+        <Sidebar setSidebarOpen={setSidebarOpen} />
       </div>
-
       <FeedColumn setSidebarOpen={setSidebarOpen} />
       <div className="search-column-display">
         <SearchColumn />
