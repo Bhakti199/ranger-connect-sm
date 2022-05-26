@@ -1,6 +1,6 @@
 import React from "react";
 import "./FollowCard.css";
-export const FollowCard = () => {
+export const FollowCard = ({ user }) => {
   return (
     <div className="follow-card">
       <div className="post-profile">
@@ -11,8 +11,10 @@ export const FollowCard = () => {
         />
       </div>
       <div className="follow-card-text">
-        <div className="follow-card-name">Nayani Chopra</div>
-        <div className="follow-card-bio">This is bio text.</div>
+        <div className="follow-card-name">
+          {user.firstName} {user.lastName}
+        </div>
+        <div className="follow-card-bio">@{user.userName}</div>
       </div>
       <button className="follow-btn">Follow</button>
     </div>

@@ -17,11 +17,13 @@
     position: fixed;
     transform: translateX(-18rem);
     transition: transform 250ms ease-in-out;
+    z-index: 3;
   }
   .sidebar-open {
     position: fixed;
     transform: translateX(0);
     transition: transform 250ms ease-in-out;
+    z-index: 3;
   }
   .sidebar-mbl {
     padding-top: 1rem;

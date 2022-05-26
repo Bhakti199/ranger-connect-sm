@@ -1,9 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./FeedColumn.css";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { RiMenuLine } from "react-icons/ri";
 import { PostCard } from "../index";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllPosts } from "../../redux/PostSlice/PostSlice";
 export const FeedColumn = ({ setSidebarOpen }) => {
+  const dispatch = useDispatch();
+  useEffect(async () => {
+    dispatch(getAllPosts());
+  }, [dispatch]);
+  const posts = useSelector((state) => state.post.posts);
+  const user = useSelector((state) => state.auth.user);
+  console.log(posts);
   return (
     <div className="feed-column">
       <div className="feed-header">
@@ -21,23 +30,22 @@ export const FeedColumn = ({ setSidebarOpen }) => {
               className="responsive-img feed-profile-img"
             />
           </div>
+          <div className="feed-profile-text">Hi, {user.firstName} </div>
           <div className="notify-icon">
             <IoNotificationsOutline size={30} color="white" />
           </div>
         </div>
 
-        <div className="feed-profile-text">Hi, Nayani. Good Morning! </div>
-
         <div className="wish-text"></div>
       </div>
       <div className="feed-main">
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
+        {posts &&
+          posts.length > 0 &&
+          posts.map((post) => (
+            <div key={post.id}>
+              <PostCard post={post} />
+            </div>
+          ))}
       </div>
     </div>
   );
