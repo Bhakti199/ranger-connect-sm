@@ -1,0 +1,22 @@
+.bookmark-page {
+  padding: 1rem 3rem;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--white-color);
+  gap: 1rem;
+  width: 50%;
+  min-height: 100vh;
+  margin: auto;
+}
+.bookmark-title {
+  font-size: 2rem;
+  text-align: center;
+  font-weight: 500;
+  margin: 0 0 1.5rem 0;
+}
+@media screen and (max-width: 1000px) {
+  .bookmark-page {
+    padding: 1rem;
+    width: 90%;
+  }
+}

@@ -1,18 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logIn } from "../../redux/AuthSlice/AuthSlice";
+import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 import "./Auth.css";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const logInHandler = async (event) => {
-    event.preventDefault();
-    const [email, password] = event.target;
-    console.log(email.value, password.value);
-    let emailId = email.value,
-      pass = password.value;
+  const [seePassword, setSeePassword] = useState(false);
+  const logInStatus = useSelector((state) => state.auth.logInStatus);
+  const [loginDetails, setLoginDetails] = useState({
+    email: "bhakti@gmail.com",
+    password: "1234567",
+  });
+
+  const logInHandler = async (e) => {
+    e.preventDefault();
+    let emailId = loginDetails.email,
+      pass = loginDetails.password;
     try {
       await dispatch(
         logIn({
@@ -28,7 +34,7 @@ export const LoginPage = () => {
 
   return (
     <div className="auth-page">
-      <form className="login-form" onSubmit={(event) => logInHandler(event)}>
+      <form className="login-form" onSubmit={(e) => logInHandler(e)}>
         <h2 className="form-title">LOG IN</h2>
         <div className="form-inputs">
           <input
@@ -36,18 +42,39 @@ export const LoginPage = () => {
             name="email"
             placeholder="E-mail"
             className="form-input"
+            value={loginDetails.email}
             required
+            onChange={(event) =>
+              setLoginDetails((prevObj) => ({
+                ...prevObj,
+                email: event.target.value,
+              }))
+            }
           />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            className="form-input"
-            required
-          />
+          <div className="form-input">
+            <input
+              type={`${seePassword ? "text" : "password"}`}
+              name="password"
+              placeholder="Password"
+              className="password-form-input"
+              value={loginDetails.password}
+              required
+              onChange={(event) =>
+                setLoginDetails((prevObj) => ({
+                  ...prevObj,
+                  password: event.target.value,
+                }))
+              }
+            />
+            {seePassword ? (
+              <AiFillEye onClick={() => setSeePassword(false)} />
+            ) : (
+              <AiFillEyeInvisible onClick={() => setSeePassword(true)} />
+            )}
+          </div>
         </div>
-        <button type="submit" className="login-form-btn">
-          Login
+        <button type="submit" className="login-form-btn btn-cta">
+          {logInStatus === "pending" ? "LOGGING..." : "LOGIN"}
         </button>
         <p className="register-text">
           Don't have an account?{" "}
@@ -56,7 +83,6 @@ export const LoginPage = () => {
           </Link>
         </p>
       </form>
-      <Link to="/my-feed"> Login as a guest</Link>
     </div>
   );
 };

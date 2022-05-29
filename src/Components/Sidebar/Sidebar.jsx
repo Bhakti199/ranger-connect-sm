@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 export const Sidebar = ({ setSidebarOpen }) => {
   const [openCreatePost, setOpenCreatePost] = useState(false);
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
   return (
     <>
       <div className="sidebar">
@@ -34,30 +35,34 @@ export const Sidebar = ({ setSidebarOpen }) => {
         </div>
         <div className="sidebar-menu-text">Menu</div>
         <div className="sidebar-items-container">
-          <div className="sidebar-item">
-            <IoRocketOutline />
+          <Link to="/my-feed" className="sidebar-item link">
+            <IoHomeOutline size={22} />
+            <span className="sidebar-item-text">My feed</span>
+          </Link>
+          <Link to="/explore" className="sidebar-item link">
+            <IoRocketOutline size={22} />
             <span className="sidebar-item-text">Explore</span>
-          </div>
-          <Link to="/profile" className="sidebar-item link">
-            <BsPerson />
+          </Link>
+          <Link to={`/profile/${user.id}`} className="sidebar-item link">
+            <BsPerson size={24} />
             <span className="sidebar-item-text">Profile</span>
           </Link>
 
-          <div className="sidebar-item sidebar-search-icon">
-            <BsSearch />
+          <Link to="/search" className="sidebar-item sidebar-search-icon link">
+            <BsSearch size={22} />
             <span className="sidebar-item-text">Search</span>
-          </div>
+          </Link>
+          <Link to="/bookmarks" className="sidebar-item link">
+            <BsBookmark size={20} />
+            <span className="sidebar-item-text">Bookmarks</span>
+          </Link>
           <div className="sidebar-item">
-            <BsBookmark />
-            <span className="sidebar-item-text">Saved posts</span>
-          </div>
-          <div className="sidebar-item">
-            <IoSettingsOutline />
+            <IoSettingsOutline size={22} />
             <span className="sidebar-item-text">Settings</span>
           </div>
         </div>
         <button
-          className="sidebar-post-btn"
+          className="sidebar-post-btn btn-cta"
           onClick={() => setOpenCreatePost(true)}
         >
           Post

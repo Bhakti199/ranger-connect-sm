@@ -10,10 +10,18 @@
 .follow-btn {
   border: none;
   background: linear-gradient(180deg, var(--pink-light), var(--pink-dark));
-  padding: 7px 10px;
+  padding: 7px 15px;
   font-size: 0.9rem;
   color: var(--white-color);
   border-radius: 10px;
+}
+.unfollow-btn {
+  border: 2px solid var(--pink-dark);
+  padding: 5px 8px;
+  font-size: 0.9rem;
+  color: var(--pink-dark);
+  border-radius: 10px;
+  background-color: var(--white-color);
 }
 .follow-card-text {
   flex-grow: 1;

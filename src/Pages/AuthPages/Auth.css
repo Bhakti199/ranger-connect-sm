@@ -28,11 +28,19 @@
   width: 90%;
 }
 .form-input {
+  display: flex;
+  align-items: center;
   border: none;
   padding: 5px 0;
   border-bottom: 3px solid var(--off-white);
   background-color: transparent;
   outline: none;
+}
+.password-form-input {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  width: 90%;
 }
 .form-input::placeholder {
   font-size: 14px;

@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { SignUp } from "../../redux/AuthSlice/AuthSlice";
+import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 import "./Auth.css";
 
 export const SignUpPage = () => {
-  const status = useSelector((state) => state.auth.status);
+  const [seePassword, setSeePassword] = useState(false);
+  const signUpStatus = useSelector((state) => state.auth.status);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -64,16 +66,23 @@ export const SignUpPage = () => {
             className="form-input"
             required
           />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            className="form-input"
-            required
-          />
+          <div className="form-input">
+            <input
+              type={`${seePassword ? "text" : "password"}`}
+              name="password"
+              placeholder="Password"
+              className="password-form-input"
+              required
+            />
+            {seePassword ? (
+              <AiFillEye onClick={() => setSeePassword(false)} />
+            ) : (
+              <AiFillEyeInvisible onClick={() => setSeePassword(true)} />
+            )}
+          </div>
         </div>
-        <button type="submit" className="login-form-btn">
-          {status === "loading" ? "SIGNING UP..." : "SIGNUP"}
+        <button type="submit" className="login-form-btn btn-cta">
+          {signUpStatus === "loading" ? "SIGNING UP..." : "SIGNUP"}
         </button>
         <p className="register-text">
           Already have an account?
