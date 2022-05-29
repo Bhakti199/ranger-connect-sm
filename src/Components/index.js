@@ -5,3 +5,6 @@ export { PostCard } from "./PostCard/PostCard";
 export { FollowCard } from "./FollowCard/FollowCard";
 export { CreatePost } from "./CreatePost/CreatePost";
 export { RequiresAuth } from "./RequiresAuth/RequiresAuth";
+export { CommentCard } from "./CommentCard/CommentCard";
+export { EditProfileModal } from "./EditProfileModal/EditProfileModal";
+export { ExploreFeedColumn } from "./ExploreFeedColumn/ExploreFeedColumn";

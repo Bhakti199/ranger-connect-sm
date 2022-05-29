@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
-import "./SearchColumn.css";
+import "../../Components/SearchColumn/SearchColumn.css";
+import "./SearchPage.css";
+import { Link } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
+import { AiOutlineDoubleLeft } from "react-icons/ai";
 import { FollowCard } from "../../Components";
 import { useSelector, useDispatch } from "react-redux";
 import { getAllUsers } from "../../redux/AuthSlice/AuthSlice";
-export const SearchColumn = () => {
+export const SearchPage = () => {
   const [searchUserInput, setSearchUserInput] = useState("");
   const dispatch = useDispatch();
   const { user, users } = useSelector((state) => state.auth);
@@ -23,7 +26,10 @@ export const SearchColumn = () => {
 
   console.log(users);
   return (
-    <div className="search-column">
+    <div className=" search-page">
+      <Link to="/my-feed">
+        <AiOutlineDoubleLeft size={35} color="white" className="backward" />
+      </Link>
       <div className="search-tab">
         <BsSearch color="white" size={23} />
         <input

@@ -14,7 +14,7 @@ html {
   --off-white: #faf9ff;
   --black-color: #191c25;
   --grey-color: #8a8da0;
-
+  --red-color: #dc2626;
   --blue-lightest: #bbb0e8;
   --blue-dark: #80789f;
   /* --blue-lighter: */
@@ -36,6 +36,18 @@ html {
   width: 100%;
   object-fit: cover;
 }
+button {
+  cursor: pointer;
+}
 .link {
   text-decoration: none;
+  cursor: pointer;
+}
+.btn-other:hover {
+  background-color: var(--pink-dark);
+  color: var(--off-white);
+}
+.btn-cta:hover {
+  transition: 0.3s ease-in-out;
+  transform: scale(1.02);
 }

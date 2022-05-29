@@ -1,6 +1,15 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
-import { MyFeedPage, Home, LoginPage, SignUpPage, ProfilePage } from "./Pages";
+import {
+  MyFeedPage,
+  Home,
+  LoginPage,
+  SignUpPage,
+  ProfilePage,
+  BookmarkPage,
+  ExplorePage,
+  SearchPage,
+} from "./Pages";
 import { RequiresAuth } from "./Components";
 function App() {
   return (
@@ -18,10 +27,34 @@ function App() {
           }
         />
         <Route
-          path="/profile"
+          path="/explore"
+          element={
+            <RequiresAuth>
+              <ExplorePage />
+            </RequiresAuth>
+          }
+        />
+        <Route
+          path="/profile/:userId"
           element={
             <RequiresAuth>
               <ProfilePage />
+            </RequiresAuth>
+          }
+        />
+        <Route
+          path="/bookmarks"
+          element={
+            <RequiresAuth>
+              <BookmarkPage />
+            </RequiresAuth>
+          }
+        />
+        <Route
+          path="/search"
+          element={
+            <RequiresAuth>
+              <SearchPage />
             </RequiresAuth>
           }
         />

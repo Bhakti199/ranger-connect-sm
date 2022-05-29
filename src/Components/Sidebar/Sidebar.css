@@ -21,9 +21,10 @@
   display: flex;
   gap: 1rem;
   align-items: center;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
 }
 .sidebar-post-btn {
+  border: none;
   background: linear-gradient(180deg, var(--pink-light), var(--pink-dark));
   color: var(--white-color);
   font-size: 1.5rem;

@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
-import "./FeedColumn.css";
-import { Link } from "react-router-dom";
+import "../FeedColumn/FeedColumn.css";
+import "./ExploreFeedColumn.css";
+import { IoRocketOutline } from "react-icons/io5";
 import { AiOutlineLogout } from "react-icons/ai";
 import { RiMenuLine } from "react-icons/ri";
 import { PostCard } from "../index";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllPosts, getComments } from "../../redux/PostSlice/PostSlice";
 import { getAllBookmarks } from "../../redux/BookmarkSlice/BookmarkSlice";
-export const FeedColumn = ({ setSidebarOpen }) => {
+export const ExploreFeedColumn = ({ setSidebarOpen }) => {
   const dispatch = useDispatch();
   useEffect(async () => {
     dispatch(getAllPosts());
@@ -19,8 +20,9 @@ export const FeedColumn = ({ setSidebarOpen }) => {
   const posts = useSelector((state) => state.post.posts);
   const comments = useSelector((state) => state.post.comments);
   const user = useSelector((state) => state.auth.user);
-  const FeedPosts = posts.filter(
-    (post) => user.following.includes(post.user.id) || post.user.id === user.id
+  const explorePosts = posts.filter(
+    (post) =>
+      !(user.following.includes(post.user.id) || post.user.id === user.id)
   );
   return (
     <div className="feed-column">
@@ -32,14 +34,10 @@ export const FeedColumn = ({ setSidebarOpen }) => {
             className="menu-icon"
             onClick={() => setSidebarOpen(true)}
           />
-          <Link to={`/profile/${user.id}`} className="feed-profile">
-            <img
-              src={user.photoUrl}
-              alt="profile img"
-              className="responsive-img feed-profile-img"
-            />
-          </Link>
-          <div className="feed-profile-text">Hi, {user.firstName} </div>
+
+          <div className="feed-profile-text">
+            <IoRocketOutline /> Explore
+          </div>
           <div className="notify-icon">
             <AiOutlineLogout size={30} color="white" />
           </div>
@@ -48,13 +46,16 @@ export const FeedColumn = ({ setSidebarOpen }) => {
         <div className="wish-text"></div>
       </div>
       <div className="feed-main">
-        {FeedPosts &&
-          FeedPosts.length > 0 &&
-          FeedPosts.map((post) => (
+        {explorePosts &&
+          explorePosts.length > 0 &&
+          explorePosts.map((post) => (
             <div key={post.id}>
               <PostCard post={post} />
             </div>
           ))}
+        {explorePosts.length === 0 && (
+          <div className="caught-up">You have all caught up.</div>
+        )}
       </div>
     </div>
   );

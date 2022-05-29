@@ -11,7 +11,7 @@ export const CreatePost = ({ setOpenCreatePost, post }) => {
   const user = useSelector((state) => state.auth.user);
   const { firstName, lastName, userName, photoUrl, id } = user;
   const [showEmoji, setShowEmoji] = useState(false);
-
+  let currentDate = new Date().toLocaleDateString();
   const onEmojiClick = (e, emojiObject) => {
     e.preventDefault();
     setPostInput((prevData) =>
@@ -27,14 +27,8 @@ export const CreatePost = ({ setOpenCreatePost, post }) => {
       dispatch(
         addPost({
           postInput,
-          user: {
-            firstName,
-            lastName,
-            userName,
-            photoUrl,
-            id,
-            createdDate: Date.now(),
-          },
+          createdAt: currentDate,
+          userId: id,
         })
       );
     }
