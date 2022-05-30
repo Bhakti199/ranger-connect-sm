@@ -99,6 +99,7 @@ export const FeedColumn = ({ setSidebarOpen }) => {
               backgroundColor: `${
                 filterApply === "TRENDING" ? "var(--pink-light)" : "white"
               } `,
+              color: `${filterApply === "TRENDING" ? "white" : "black"} `,
             }}
             className="sort-by-item"
             onClick={() => setFilterHandler("TRENDING")}
@@ -110,6 +111,7 @@ export const FeedColumn = ({ setSidebarOpen }) => {
               backgroundColor: `${
                 filterApply === "LATEST" ? "var(--pink-light)" : "white"
               } `,
+              color: `${filterApply === "LATEST" ? "white" : "black"} `,
             }}
             className="sort-by-item"
             onClick={() => setFilterHandler("LATEST")}
@@ -121,6 +123,7 @@ export const FeedColumn = ({ setSidebarOpen }) => {
               backgroundColor: `${
                 filterApply === "EARLIEST" ? "var(--pink-light)" : "white"
               } `,
+              color: `${filterApply === "EARLIEST" ? "white" : "black"} `,
             }}
             className="sort-by-item"
             onClick={() => setFilterHandler("EARLIEST")}

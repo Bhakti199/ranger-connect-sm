@@ -33,9 +33,11 @@ export const SignUp = createAsyncThunk(
         lastName,
         userName,
         email,
+        followers: [],
+        following: [],
         id: data.user.uid,
         photoUrl:
-          "https://res.cloudinary.com/bhakti1801/image/upload/v1652444433/model8_rvnzuo.jpg",
+          "https://res.cloudinary.com/bhakti1801/image/upload/v1653925669/blank-profile-picture-g1870ca927_640_xroajd.png",
       });
       localStorage.setItem("userId", data.user.uid);
       return {
@@ -43,9 +45,11 @@ export const SignUp = createAsyncThunk(
         lastName,
         userName,
         email,
+        followers: [],
+        following: [],
         id: data.user.uid,
         photoUrl:
-          "https://res.cloudinary.com/bhakti1801/image/upload/v1652444433/model8_rvnzuo.jpg",
+          "https://res.cloudinary.com/bhakti1801/image/upload/v1653925669/blank-profile-picture-g1870ca927_640_xroajd.png",
       };
     } catch (error) {
       console.error(error);
@@ -134,7 +138,7 @@ export const followUser = createAsyncThunk(
       });
 
       const followrUserRef = doc(db, "users", followuserId);
-      const followersUserRef = await updateDoc(followrUserRef, {
+      await updateDoc(followrUserRef, {
         followers: arrayUnion(userData.id),
       });
       return { followuserId, userId: userData.id };
@@ -229,9 +233,11 @@ const AuthSlice = createSlice({
   },
   extraReducers: {
     [SignUp.fulfilled]: (state, action) => {
+      console.log("before00000", action.payload);
       state.isUserLoggedIn = true;
       state.user = action.payload;
       state.signUpStatus = "succeed";
+      console.log("after0", state.user);
     },
     [SignUp.rejected]: (state, action) => {
       state.error = action.error.message;
@@ -269,6 +275,8 @@ const AuthSlice = createSlice({
     },
     [followUser.fulfilled]: (state, action) => {
       console.log(action.payload);
+      console.log("in foolooo", state.user);
+      console.log("hei", state.user.following);
       state.user.following = state.user.following.concat(
         action.payload.followuserId
       );

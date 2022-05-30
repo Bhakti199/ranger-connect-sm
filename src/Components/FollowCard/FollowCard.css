@@ -33,4 +33,9 @@
 .follow-card-name {
   font-weight: 500;
   font-size: 1.1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }

@@ -53,7 +53,7 @@ export const PostCard = ({ post }) => {
           <img
             src={
               post.user.photoUrl === ""
-                ? "https://res.cloudinary.com/bhakti1801/image/upload/v1653914756/user_jbkt30.png"
+                ? "https://res.cloudinary.com/bhakti1801/image/upload/v1653925669/blank-profile-picture-g1870ca927_640_xroajd.png"
                 : post.user.photoUrl
             }
             alt=""

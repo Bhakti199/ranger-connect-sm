@@ -38,7 +38,7 @@ export const ProfilePage = () => {
           <img
             src={
               currentUserProfile?.photoUrl === ""
-                ? "https://res.cloudinary.com/bhakti1801/image/upload/v1653914756/user_jbkt30.png"
+                ? "https://res.cloudinary.com/bhakti1801/image/upload/v1653925669/blank-profile-picture-g1870ca927_640_xroajd.png"
                 : currentUserProfile?.photoUrl
             }
             alt="profile"
