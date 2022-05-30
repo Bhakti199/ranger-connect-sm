@@ -10,8 +10,16 @@ import {
   ExplorePage,
   SearchPage,
 } from "./Pages";
+import { getCurrentUser } from "./redux/AuthSlice/AuthSlice";
 import { RequiresAuth } from "./Components";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getCurrentUser());
+  }, [dispatch]);
+
   return (
     <div className="App">
       <Routes>

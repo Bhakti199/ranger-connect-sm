@@ -51,3 +51,14 @@
   color: var(--white-color);
   background: linear-gradient(180deg, var(--pink-light), var(--pink-dark));
 }
+@media screen and (max-width: 800px) {
+  .create-post {
+    top: 30%;
+    left: 50%;
+    transform: translate(-20%, -30%);
+    width: 20rem;
+  }
+  .post-input {
+    width: 80%;
+  }
+}

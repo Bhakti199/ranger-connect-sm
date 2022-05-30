@@ -43,7 +43,7 @@ export const EditProfileModal = ({ setOpenEditProfile, user }) => {
     const file = editUserData.photo;
     if (!file && editUserData.bio && editUserData.portfolioLink) {
       return dispatch(
-        updateUserData({
+        updateUserDetails({
           bio: editUserData.bio,
           portfolioLink: editUserData.portfolioLink,
         })

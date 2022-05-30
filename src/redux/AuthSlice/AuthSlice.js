@@ -37,6 +37,7 @@ export const SignUp = createAsyncThunk(
         photoUrl:
           "https://res.cloudinary.com/bhakti1801/image/upload/v1652444433/model8_rvnzuo.jpg",
       });
+      localStorage.setItem("userId", data.user.uid);
       return {
         firstName,
         lastName,
@@ -57,10 +58,10 @@ export const logIn = createAsyncThunk(
   "auth/logIn",
   async ({ email, password }) => {
     try {
-      console.log(email, password);
       const auth = getAuth(app);
       const data = await signInWithEmailAndPassword(auth, email, password);
       const userDoc = await getDoc(doc(db, "users", data.user.uid));
+      localStorage.setItem("userId", userDoc.data().id);
       return userDoc.data();
     } catch (error) {
       console.error(error);
@@ -80,6 +81,23 @@ export const logOut = createAsyncThunk("auth/logOut", () => {
     return Promise.reject(error);
   }
 });
+
+export const getCurrentUser = createAsyncThunk(
+  "auth/getCurrentUser",
+  async () => {
+    try {
+      const currentUserId = localStorage.getItem("userId");
+      if (currentUserId) {
+        const userRef = await getDoc(doc(db, "users", currentUserId));
+        return userRef.data();
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+);
 
 export const getAllUsers = createAsyncThunk(
   "auth/getAllUsers",
@@ -201,7 +219,14 @@ const initialState = {
 const AuthSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    setUserLogOut: (state) => {
+      console.log("hello tushar");
+      localStorage.removeItem("userId");
+      state.isUserLoggedIn = false;
+      state.user = {};
+    },
+  },
   extraReducers: {
     [SignUp.fulfilled]: (state, action) => {
       state.isUserLoggedIn = true;
@@ -287,6 +312,17 @@ const AuthSlice = createSlice({
     [getUserProfileDetails.pending]: (state) => {
       state.getUserDetailsStatus = "loading";
     },
+    [getCurrentUser.fulfilled]: (state, action) => {
+      if (action.payload) {
+        state.isUserLoggedIn = true;
+        state.user = { ...action.payload };
+      } else {
+        state.isUserLoggedIn = false;
+        state.user = {};
+      }
+    },
   },
 });
+
+export const { setUserLogOut } = AuthSlice.actions;
 export default AuthSlice.reducer;

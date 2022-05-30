@@ -7,6 +7,7 @@ import { EditProfileModal, PostCard } from "../../Components";
 import "./ProfilePage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserProfileDetails } from "../../redux/AuthSlice/AuthSlice";
+import { getAllPosts } from "../../redux/PostSlice/PostSlice";
 export const ProfilePage = () => {
   const dispatch = useDispatch();
   const [openEditProfile, setOpenEditProfile] = useState(false);
@@ -18,13 +19,12 @@ export const ProfilePage = () => {
 
   useEffect(() => {
     dispatch(getUserProfileDetails(userId));
+    dispatch(getAllPosts());
   }, [dispatch]);
 
-  const loggedInUserPost = posts.filter(
-    (post) => post.user.username === user.username
-  );
+  const loggedInUserPost = posts.filter((post) => post.user.id === userId);
   const userPosts = posts.filter((post) => post.user.id === userId);
-
+  console.log(userPosts, "userposts");
   const currentUserProfile = userId === user.id ? user : otherUserDetails;
   console.log(otherUserDetails);
   const isFollowing = otherUserDetails?.followers?.includes(user.id);

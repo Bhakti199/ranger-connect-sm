@@ -1,14 +1,16 @@
 import React, { useEffect } from "react";
 import "./FeedColumn.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineLogout } from "react-icons/ai";
 import { RiMenuLine } from "react-icons/ri";
 import { PostCard } from "../index";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllPosts, getComments } from "../../redux/PostSlice/PostSlice";
 import { getAllBookmarks } from "../../redux/BookmarkSlice/BookmarkSlice";
+import { setUserLogOut } from "../../redux/AuthSlice/AuthSlice";
 export const FeedColumn = ({ setSidebarOpen }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   useEffect(async () => {
     dispatch(getAllPosts());
     dispatch(getAllBookmarks());
@@ -19,9 +21,14 @@ export const FeedColumn = ({ setSidebarOpen }) => {
   const posts = useSelector((state) => state.post.posts);
   const comments = useSelector((state) => state.post.comments);
   const user = useSelector((state) => state.auth.user);
-  const FeedPosts = posts.filter(
-    (post) => user.following.includes(post.user.id) || post.user.id === user.id
-  );
+  console.log("from feedcolumn", user);
+  const FeedPosts =
+    user.following &&
+    posts.length > 0 &&
+    posts.filter(
+      (post) =>
+        user.following.includes(post.user.id) || post.user.id === user.id
+    );
   return (
     <div className="feed-column">
       <div className="feed-header">
@@ -41,7 +48,14 @@ export const FeedColumn = ({ setSidebarOpen }) => {
           </Link>
           <div className="feed-profile-text">Hi, {user.firstName} </div>
           <div className="notify-icon">
-            <AiOutlineLogout size={30} color="white" />
+            <AiOutlineLogout
+              size={30}
+              color="white"
+              onClick={() => {
+                dispatch(setUserLogOut());
+                navigate("/");
+              }}
+            />
           </div>
         </div>
 
