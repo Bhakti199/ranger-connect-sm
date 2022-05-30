@@ -14,7 +14,7 @@
 .sidebar-items-container {
   display: flex;
   flex-direction: column;
-  gap: 1.7rem;
+  gap: 1rem;
   padding: 1rem 0;
 }
 .sidebar-item {
