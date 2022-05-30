@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./FeedColumn.css";
 import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineLogout } from "react-icons/ai";
@@ -17,11 +17,12 @@ export const FeedColumn = ({ setSidebarOpen }) => {
     dispatch(getComments());
   }, [dispatch]);
 
+  const [filterApply, setFilterApply] = useState("");
   const bookmarks = useSelector((state) => state.bookmark.bookmarks);
   const posts = useSelector((state) => state.post.posts);
   const comments = useSelector((state) => state.post.comments);
   const user = useSelector((state) => state.auth.user);
-  console.log("from feedcolumn", user);
+
   const FeedPosts =
     user.following &&
     posts.length > 0 &&
@@ -29,6 +30,36 @@ export const FeedColumn = ({ setSidebarOpen }) => {
       (post) =>
         user.following.includes(post.user.id) || post.user.id === user.id
     );
+
+  const applyFilterHandler = () => {
+    switch (filterApply) {
+      case "TRENDING":
+        return FeedPosts.sort(
+          (first, second) => second.likes.length - first.likes.length
+        );
+      case "EARLIEST":
+        return FeedPosts.sort(
+          (first, second) =>
+            new Date(first.createdAt) - new Date(second.createdAt)
+        );
+      case "LATEST":
+        return FeedPosts.sort(
+          (first, second) =>
+            new Date(second.createdAt) - new Date(first.createdAt)
+        );
+      default:
+        return FeedPosts;
+    }
+  };
+
+  let filteredPosts = applyFilterHandler();
+
+  const setFilterHandler = (filterInput) => {
+    const check = filterApply === "" || filterApply != filterInput;
+    setFilterApply(check ? filterInput : "");
+    filteredPosts = filterInput === "" && FeedPosts;
+  };
+
   return (
     <div className="feed-column">
       <div className="feed-header">
@@ -62,9 +93,44 @@ export const FeedColumn = ({ setSidebarOpen }) => {
         <div className="wish-text"></div>
       </div>
       <div className="feed-main">
-        {FeedPosts &&
-          FeedPosts.length > 0 &&
-          FeedPosts.map((post) => (
+        <div className="sort-by-container">
+          <div
+            style={{
+              backgroundColor: `${
+                filterApply === "TRENDING" ? "var(--pink-light)" : "white"
+              } `,
+            }}
+            className="sort-by-item"
+            onClick={() => setFilterHandler("TRENDING")}
+          >
+            Trending
+          </div>
+          <div
+            style={{
+              backgroundColor: `${
+                filterApply === "LATEST" ? "var(--pink-light)" : "white"
+              } `,
+            }}
+            className="sort-by-item"
+            onClick={() => setFilterHandler("LATEST")}
+          >
+            Latest
+          </div>
+          <div
+            style={{
+              backgroundColor: `${
+                filterApply === "EARLIEST" ? "var(--pink-light)" : "white"
+              } `,
+            }}
+            className="sort-by-item"
+            onClick={() => setFilterHandler("EARLIEST")}
+          >
+            Earliest
+          </div>
+        </div>
+        {filteredPosts &&
+          filteredPosts.length > 0 &&
+          filteredPosts.map((post) => (
             <div key={post.id}>
               <PostCard post={post} />
             </div>

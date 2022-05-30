@@ -86,17 +86,15 @@ export const Sidebar = ({ setSidebarOpen }) => {
             <IoSettingsOutline size={22} />
             <span className="sidebar-item-text">Settings</span>
           </div>
+          <button
+            className="sidebar-post-btn btn-cta"
+            onClick={() => setOpenCreatePost(true)}
+          >
+            Post
+          </button>
         </div>
-        <button
-          className="sidebar-post-btn btn-cta"
-          onClick={() => setOpenCreatePost(true)}
-        >
-          Post
-        </button>
-        <button className="sidebar-post-btn-mbl">
-          <IoAdd color="white" size={25} />
-        </button>
       </div>
+
       {openCreatePost && <CreatePost setOpenCreatePost={setOpenCreatePost} />}
     </>
   );

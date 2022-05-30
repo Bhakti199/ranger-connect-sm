@@ -31,6 +31,7 @@
   padding: 7px 3.5rem;
   border-radius: 1rem;
   margin: 1rem 0;
+  width: fit-content;
 }
 .sidebar-post-btn-mbl {
   border: none;
@@ -64,6 +65,7 @@
 .sidebar-cancel {
   display: none;
 }
+
 @media screen and (max-width: 1300px) {
   .sidebar {
     width: fit-content;

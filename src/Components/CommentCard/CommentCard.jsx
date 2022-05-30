@@ -20,7 +20,11 @@ export const CommentCard = ({ postId }) => {
           <div className="follow-card">
             <div className="post-profile">
               <img
-                src="https://res.cloudinary.com/bhakti1801/image/upload/v1652444433/model8_rvnzuo.jpg"
+                src={
+                  comment.userData.photoUrl === ""
+                    ? "https://res.cloudinary.com/bhakti1801/image/upload/v1653914756/user_jbkt30.png"
+                    : comment.userData.photoUrl
+                }
                 alt=""
                 className="responsive-img feed-profile-img"
               />

@@ -21,7 +21,7 @@ export const EditProfileModal = ({ setOpenEditProfile, user }) => {
 
   const [photoURL, setPhotoURL] = useState(
     user?.photoUrl ||
-      "https://res.cloudinary.com/bhakti1801/image/upload/v1652444433/model8_rvnzuo.jpg"
+      "https://res.cloudinary.com/bhakti1801/image/upload/v1653914756/user_jbkt30.png"
   );
 
   const onChangeHandler = (e) => {
