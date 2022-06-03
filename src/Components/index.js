@@ -8,3 +8,4 @@ export { RequiresAuth } from "./RequiresAuth/RequiresAuth";
 export { CommentCard } from "./CommentCard/CommentCard";
 export { EditProfileModal } from "./EditProfileModal/EditProfileModal";
 export { ExploreFeedColumn } from "./ExploreFeedColumn/ExploreFeedColumn";
+export { Loader } from "./Loader/Loader";

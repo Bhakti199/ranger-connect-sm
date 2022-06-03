@@ -24,11 +24,11 @@ export const FeedColumn = ({ setSidebarOpen }) => {
   const user = useSelector((state) => state.auth.user);
 
   const FeedPosts =
-    user.following &&
-    posts.length > 0 &&
-    posts.filter(
+    user?.following &&
+    posts?.length > 0 &&
+    posts?.filter(
       (post) =>
-        user.following.includes(post.user.id) || post.user.id === user.id
+        user.following.includes(post?.userId) || post?.userId === user?.id
     );
 
   const applyFilterHandler = () => {

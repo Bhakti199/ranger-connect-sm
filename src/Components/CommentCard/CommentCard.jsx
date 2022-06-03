@@ -7,10 +7,11 @@ import { useDispatch, useSelector } from "react-redux";
 export const CommentCard = ({ postId }) => {
   const dispatch = useDispatch();
   const comments = useSelector((state) => state.post.comments);
-  const commnentsOnPost = comments.filter(
+  const user = useSelector((state) => state.auth.user);
+  const commnentsOnPost = comments?.filter(
     (comment) => comment.postId === postId
   );
-  const user = useSelector((state) => state.auth.user);
+
   return (
     <>
       {commnentsOnPost.length === 0 ? (

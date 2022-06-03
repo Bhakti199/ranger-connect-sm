@@ -26,6 +26,7 @@ export const initialState = {
 
 export const addPost = createAsyncThunk("post/addPost", async (postData) => {
   try {
+    console.log(postData);
     const postRef = await addDoc(collection(db, "posts"), {
       ...postData,
       likes: [],
@@ -33,7 +34,15 @@ export const addPost = createAsyncThunk("post/addPost", async (postData) => {
     await updateDoc(postRef, { id: postRef.id });
     const postSnap = await getDoc(postRef);
     const post = postSnap.data();
+    console.log(post);
     const userSnap = await getDoc(doc(db, "users", post.userId));
+    console.log(userSnap.data());
+    console.log({ ...post, id: postSnap.id, user: userSnap.data() });
+    console.log("from call", {
+      ...post,
+      id: postSnap.id,
+      user: userSnap.data(),
+    });
     return { ...post, id: postSnap.id, user: userSnap.data() };
   } catch (error) {
     console.error(error);
@@ -47,6 +56,7 @@ export const getAllPosts = createAsyncThunk("post/getAllPosts", async () => {
     let posts = [];
     for await (const post of allPostsSnap.docs) {
       const postData = post.data();
+      console.log(postData);
       const userRef = await getDoc(doc(db, "users", postData.userId));
       posts = [...posts, { user: userRef.data(), ...postData }];
     }
@@ -75,6 +85,8 @@ export const deletePost = createAsyncThunk(
 );
 
 export const editPost = createAsyncThunk("post/editPost", async (postData) => {
+  const newPostData = { ...postData };
+  delete newPostData.user;
   const postDataRef = doc(db, "posts", postData.id);
   try {
     await updateDoc(postDataRef, postData);
@@ -182,13 +194,14 @@ const PostSlice = createSlice({
     [addPost.fulfilled]: (state, action) => {
       state.posts.push(action.payload);
       state.statusAddPost = "succeed";
+      console.log("post action", action.payload);
     },
     [addPost.rejected]: (state, action) => {
       state.error = action.error.message;
       state.statusAddPost = "failed";
     },
     [addPost.pending]: (state, action) => {
-      state.statusAddPost = "loading";
+      state.statusAddPost = "pending";
     },
     [getAllPosts.fulfilled]: (state, action) => {
       state.posts = action.payload;
@@ -234,7 +247,7 @@ const PostSlice = createSlice({
       state.statusLikePost = "succeed";
     },
     [likedUserPost.pending]: (state, action) => {
-      state.statusLikePost = "loading";
+      state.statusLikePost = "pending";
     },
     [disLikedUserPost.fulfilled]: (state, action) => {
       state.posts = state.posts.map((post) =>
@@ -248,7 +261,7 @@ const PostSlice = createSlice({
       state.statusDislikePost = "succeed";
     },
     [disLikedUserPost.pending]: (state, action) => {
-      state.statusDislikePost = "loading";
+      state.statusDislikePost = "pending";
     },
     [addComments.fulfilled]: (state, action) => {
       state.comments = state.comments.concat(action.payload);

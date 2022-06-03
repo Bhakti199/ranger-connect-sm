@@ -8,6 +8,7 @@ import "./Auth.css";
 export const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const [seePassword, setSeePassword] = useState(false);
   const logInStatus = useSelector((state) => state.auth.logInStatus);
   const [loginDetails, setLoginDetails] = useState({

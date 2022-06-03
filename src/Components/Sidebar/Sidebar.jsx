@@ -13,7 +13,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 export const Sidebar = ({ setSidebarOpen }) => {
   const [openCreatePost, setOpenCreatePost] = useState(false);
-  const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const getStyleOfActiveLink = ({ isActive }) => ({
     color: isActive && "white",
@@ -82,10 +81,7 @@ export const Sidebar = ({ setSidebarOpen }) => {
             <BsBookmark size={20} />
             <span className="sidebar-item-text">Bookmarks</span>
           </NavLink>
-          <div className="sidebar-item">
-            <IoSettingsOutline size={22} />
-            <span className="sidebar-item-text">Settings</span>
-          </div>
+
           <button
             className="sidebar-post-btn btn-cta"
             onClick={() => setOpenCreatePost(true)}

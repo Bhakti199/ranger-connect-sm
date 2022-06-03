@@ -50,6 +50,7 @@ export const EditProfileModal = ({ setOpenEditProfile, user }) => {
       );
     }
     const id = Math.random().toString(36).substring(2, 15);
+    console.log("profile img", file, file.name);
     const fileNameStr = file.name.split(".");
     const extension = fileNameStr[fileNameStr.length - 1];
     const filePath = `profile/${id}.${extension}`;

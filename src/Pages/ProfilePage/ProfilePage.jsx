@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { BsDot } from "react-icons/bs";
 import { AiOutlineDoubleLeft } from "react-icons/ai";
 import { IoSettingsOutline } from "react-icons/io5";
-import { EditProfileModal, PostCard } from "../../Components";
+import { EditProfileModal, PostCard, Loader } from "../../Components";
 import "./ProfilePage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserProfileDetails } from "../../redux/AuthSlice/AuthSlice";
@@ -11,7 +11,9 @@ import { getAllPosts } from "../../redux/PostSlice/PostSlice";
 export const ProfilePage = () => {
   const dispatch = useDispatch();
   const [openEditProfile, setOpenEditProfile] = useState(false);
-  const user = useSelector((state) => state.auth.user);
+  const { user, updateUserDetailsStatus, getUserDetailsStatus } = useSelector(
+    (state) => state.auth
+  );
   const otherUserDetails = useSelector((state) => state.auth.otherUserDetails);
   const posts = useSelector((state) => state.post.posts);
   const { userId } = useParams();
@@ -105,10 +107,19 @@ export const ProfilePage = () => {
       <h2>
         {userId === user.id ? "My" : currentUserProfile.firstName + "'s"} Posts
       </h2>
+
       <div className="profile-posts">
-        {userId === user.id
-          ? loggedInUserPost.map((post) => <PostCard post={post} />)
-          : userPosts.map((post) => <PostCard post={post} />)}
+        {userId === user.id ? (
+          loggedInUserPost.length === 0 ? (
+            <div>0 posts</div>
+          ) : (
+            loggedInUserPost.map((post) => <PostCard post={post} />)
+          )
+        ) : loggedInUserPost.length === 0 ? (
+          <div>0 posts</div>
+        ) : (
+          userPosts.map((post) => <PostCard post={post} />)
+        )}
       </div>
       {openEditProfile && (
         <>
@@ -122,6 +133,8 @@ export const ProfilePage = () => {
           />
         </>
       )}
+      {(updateUserDetailsStatus === "pending" ||
+        getUserDetailsStatus === "pending") && <Loader />}
     </div>
   );
 };

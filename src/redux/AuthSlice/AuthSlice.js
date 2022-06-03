@@ -129,19 +129,18 @@ export const getAllUsers = createAsyncThunk(
 export const followUser = createAsyncThunk(
   "auth/followUser",
   async (followuserId, { getState }) => {
-    const userstate = getState();
-    const userData = userstate.auth.user;
+    const currentUserId = localStorage.getItem("userId");
     try {
-      const userRef = doc(db, "users", userData.id);
+      const userRef = doc(db, "users", currentUserId);
       const userUpdatedRef = await updateDoc(userRef, {
         following: arrayUnion(followuserId),
       });
 
       const followrUserRef = doc(db, "users", followuserId);
       await updateDoc(followrUserRef, {
-        followers: arrayUnion(userData.id),
+        followers: arrayUnion(currentUserId),
       });
-      return { followuserId, userId: userData.id };
+      return { followuserId, userId: currentUserId };
     } catch (error) {
       console.error(error);
       return Promise.reject(error);
@@ -152,18 +151,19 @@ export const followUser = createAsyncThunk(
 export const unfollowUser = createAsyncThunk(
   "auth/unfollowUser",
   async (followuserId, { getState }) => {
-    const userstate = getState();
-    const userData = userstate.auth.user;
+    // const userstate = getState();
+    // const userData = userstate.auth.user;
+    const currentUserId = localStorage.getItem("userId");
     try {
-      const userDataRef = doc(db, "users", userData.id);
+      const userDataRef = doc(db, "users", currentUserId);
       const postRef = await updateDoc(userDataRef, {
         following: arrayRemove(followuserId),
       });
       const followerUserRef = doc(db, "users", followuserId);
       const followersUserRef = await updateDoc(followerUserRef, {
-        followers: arrayRemove(userData.id),
+        followers: arrayRemove(currentUserId),
       });
-      return { followuserId, userId: userData.id };
+      return { followuserId, userId: currentUserId };
     } catch (error) {
       console.error(error);
       return Promise.reject(error);
@@ -174,11 +174,11 @@ export const unfollowUser = createAsyncThunk(
 export const updateUserDetails = createAsyncThunk(
   "auth/updateUserDetails",
   async (userData, { getState }) => {
-    const userstate = getState();
-    const userId = userstate.auth.user.id;
-
+    // const userstate = getState();
+    // const userId = userstate.auth.user.id;
+    const currentUserId = localStorage.getItem("userId");
     try {
-      const userRef = doc(db, "users", userId);
+      const userRef = doc(db, "users", currentUserId);
       await updateDoc(userRef, userData);
       const newUserData = await getDoc(userRef);
       return newUserData.data();
@@ -310,7 +310,7 @@ const AuthSlice = createSlice({
       state.updateUserDetailsStatus = "succeed";
     },
     [updateUserDetails.pending]: (state, action) => {
-      state.updateUserDetailsStatus = "loading";
+      state.updateUserDetailsStatus = "pending";
     },
     [getUserProfileDetails.fulfilled]: (state, action) => {
       console.log(action.payload);
@@ -318,7 +318,7 @@ const AuthSlice = createSlice({
       state.getUserDetailsStatus = "succeed";
     },
     [getUserProfileDetails.pending]: (state) => {
-      state.getUserDetailsStatus = "loading";
+      state.getUserDetailsStatus = "pending";
     },
     [getCurrentUser.fulfilled]: (state, action) => {
       if (action.payload) {

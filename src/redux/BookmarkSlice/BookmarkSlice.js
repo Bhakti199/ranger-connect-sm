@@ -20,7 +20,7 @@ const initialState = {
   bookmarks: [],
   error: "",
   addBookmarkStatus: "idle",
-  getBookmarksStatus: "idle",
+  getAllBookmarksStatus: "idle",
   deleteBookmarkStatus: "idle",
   deletePostStatus: "idle",
 };
@@ -52,7 +52,6 @@ export const getAllBookmarks = createAsyncThunk(
       const userState = getState();
       const user = userState.auth.user;
       const currentUserId = localStorage.getItem("userId");
-      console.log("from bookmark", user);
       const bookmarkQuery = query(
         collectionRef,
         where("userId", "==", currentUserId)
@@ -109,10 +108,10 @@ const BookmarkSlice = createSlice({
     },
     [getAllBookmarks.fulfilled]: (state, action) => {
       state.bookmarks = action.payload;
-      state.getBookmarksStatus = "succeed";
+      state.getAllBookmarksStatus = "succeed";
     },
     [getAllBookmarks.pending]: (state, action) => {
-      state.getAllBookmarksStatus = "loading";
+      state.getAllBookmarksStatus = "pending";
     },
     [getAllBookmarks.rejected]: (state, action) => {
       state.error = action.error.message;
