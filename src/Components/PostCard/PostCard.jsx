@@ -23,15 +23,17 @@ import {
   likedUserPost,
   disLikedUserPost,
 } from "../../redux/PostSlice/PostSlice";
-import { CommentCard } from "../index";
+import { CommentCard, Loader } from "../index";
 
 export const PostCard = ({ post }) => {
+  const [editingPost, setEditingPost] = useState(false);
   const [openCreatePost, setOpenCreatePost] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [commentInput, setCommentInput] = useState("");
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const bookmarks = useSelector((state) => state.bookmark.bookmarks);
+  const { statusEditPost, statusAddPost } = useSelector((state) => state.post);
   const bookmarkId = bookmarks.find(
     (bookmark) => bookmark.post.id === post.id
   )?.bookmarkId;
@@ -53,7 +55,7 @@ export const PostCard = ({ post }) => {
           <img
             src={
               post.user.photoUrl === ""
-                ? "https://res.cloudinary.com/bhakti1801/image/upload/v1652444433/model8_rvnzuo.jpg"
+                ? "https://res.cloudinary.com/bhakti1801/image/upload/v1653925669/blank-profile-picture-g1870ca927_640_xroajd.png"
                 : post.user.photoUrl
             }
             alt=""
@@ -68,6 +70,15 @@ export const PostCard = ({ post }) => {
             <span>{post.createdAt}</span>
           </div>
           <div className="postcard-main-text"> {post.postInput} </div>
+          {post?.postPhotoUrl && (
+            <div className="post-photo">
+              <img
+                src={post.postPhotoUrl}
+                alt=""
+                className="responsive-post-img"
+              />
+            </div>
+          )}
           <div className="postcard-footer">
             {post.likes.length}{" "}
             {isliked ? (
@@ -100,7 +111,12 @@ export const PostCard = ({ post }) => {
             {post.user.userName === user.userName && (
               <>
                 <div className="postcard-icon">
-                  <FiEdit onClick={() => setOpenCreatePost(true)} />
+                  <FiEdit
+                    onClick={() => {
+                      setOpenCreatePost(true);
+                      setEditingPost(true);
+                    }}
+                  />
                 </div>
                 <div className="postcard-icon">
                   <BsTrash
@@ -113,7 +129,6 @@ export const PostCard = ({ post }) => {
             )}
           </div>
           <div className="postcard-comment-tab">
-            <BsEmojiSmile size={21} color="var(--grey-color)" />
             <input
               className="comment-tab-input"
               placeholder="Add comment..."
@@ -132,13 +147,22 @@ export const PostCard = ({ post }) => {
               }}
             />
           </div>
+
           <div className="comment-column">
             {showComments && <CommentCard postId={post.id} />}
           </div>
         </div>
       </div>{" "}
       {openCreatePost && (
-        <CreatePost setOpenCreatePost={setOpenCreatePost} post={post} />
+        <CreatePost
+          setOpenCreatePost={setOpenCreatePost}
+          post={post}
+          setEditingPost={setEditingPost}
+          editingPost={editingPost}
+        />
+      )}
+      {(statusEditPost === "pending" || statusAddPost === "pending") && (
+        <Loader />
       )}
     </>
   );

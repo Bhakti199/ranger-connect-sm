@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import "./MyFeedPage.css";
-import { FeedColumn, SearchColumn, Sidebar } from "../../Components";
+import { FeedColumn, Loader, SearchColumn, Sidebar } from "../../Components";
+import { useSelector } from "react-redux";
 
 export const MyFeedPage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { statusAllPost, logOutStatus } = useSelector((state) => state.post);
   return (
     <div className="my-feed-page">
       <div
@@ -17,6 +19,9 @@ export const MyFeedPage = () => {
       <div className="search-column-display">
         <SearchColumn />
       </div>
+      {(statusAllPost === "pending" || logOutStatus === "pending") && (
+        <Loader />
+      )}
     </div>
   );
 };

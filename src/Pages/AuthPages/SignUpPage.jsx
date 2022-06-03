@@ -14,7 +14,7 @@ export const SignUpPage = () => {
   const SignUpHandler = async (event) => {
     event.preventDefault();
     const [first, last, username, email, password] = event.target;
-    console.log(email.value, password.value);
+    const signUpStatus = useSelector((state) => state.post.signUpStatus);
     let firstName = first.value,
       lastName = last.value,
       userName = username.value,

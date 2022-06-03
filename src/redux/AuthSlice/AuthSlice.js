@@ -33,18 +33,23 @@ export const SignUp = createAsyncThunk(
         lastName,
         userName,
         email,
+        followers: [],
+        following: [],
         id: data.user.uid,
         photoUrl:
-          "https://res.cloudinary.com/bhakti1801/image/upload/v1652444433/model8_rvnzuo.jpg",
+          "https://res.cloudinary.com/bhakti1801/image/upload/v1653925669/blank-profile-picture-g1870ca927_640_xroajd.png",
       });
+      localStorage.setItem("userId", data.user.uid);
       return {
         firstName,
         lastName,
         userName,
         email,
+        followers: [],
+        following: [],
         id: data.user.uid,
         photoUrl:
-          "https://res.cloudinary.com/bhakti1801/image/upload/v1652444433/model8_rvnzuo.jpg",
+          "https://res.cloudinary.com/bhakti1801/image/upload/v1653925669/blank-profile-picture-g1870ca927_640_xroajd.png",
       };
     } catch (error) {
       console.error(error);
@@ -57,10 +62,10 @@ export const logIn = createAsyncThunk(
   "auth/logIn",
   async ({ email, password }) => {
     try {
-      console.log(email, password);
       const auth = getAuth(app);
       const data = await signInWithEmailAndPassword(auth, email, password);
       const userDoc = await getDoc(doc(db, "users", data.user.uid));
+      localStorage.setItem("userId", userDoc.data().id);
       return userDoc.data();
     } catch (error) {
       console.error(error);
@@ -80,6 +85,23 @@ export const logOut = createAsyncThunk("auth/logOut", () => {
     return Promise.reject(error);
   }
 });
+
+export const getCurrentUser = createAsyncThunk(
+  "auth/getCurrentUser",
+  async () => {
+    try {
+      const currentUserId = localStorage.getItem("userId");
+      if (currentUserId) {
+        const userRef = await getDoc(doc(db, "users", currentUserId));
+        return userRef.data();
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+);
 
 export const getAllUsers = createAsyncThunk(
   "auth/getAllUsers",
@@ -107,19 +129,18 @@ export const getAllUsers = createAsyncThunk(
 export const followUser = createAsyncThunk(
   "auth/followUser",
   async (followuserId, { getState }) => {
-    const userstate = getState();
-    const userData = userstate.auth.user;
+    const currentUserId = localStorage.getItem("userId");
     try {
-      const userRef = doc(db, "users", userData.id);
+      const userRef = doc(db, "users", currentUserId);
       const userUpdatedRef = await updateDoc(userRef, {
         following: arrayUnion(followuserId),
       });
 
       const followrUserRef = doc(db, "users", followuserId);
-      const followersUserRef = await updateDoc(followrUserRef, {
-        followers: arrayUnion(userData.id),
+      await updateDoc(followrUserRef, {
+        followers: arrayUnion(currentUserId),
       });
-      return { followuserId, userId: userData.id };
+      return { followuserId, userId: currentUserId };
     } catch (error) {
       console.error(error);
       return Promise.reject(error);
@@ -130,18 +151,19 @@ export const followUser = createAsyncThunk(
 export const unfollowUser = createAsyncThunk(
   "auth/unfollowUser",
   async (followuserId, { getState }) => {
-    const userstate = getState();
-    const userData = userstate.auth.user;
+    // const userstate = getState();
+    // const userData = userstate.auth.user;
+    const currentUserId = localStorage.getItem("userId");
     try {
-      const userDataRef = doc(db, "users", userData.id);
+      const userDataRef = doc(db, "users", currentUserId);
       const postRef = await updateDoc(userDataRef, {
         following: arrayRemove(followuserId),
       });
       const followerUserRef = doc(db, "users", followuserId);
       const followersUserRef = await updateDoc(followerUserRef, {
-        followers: arrayRemove(userData.id),
+        followers: arrayRemove(currentUserId),
       });
-      return { followuserId, userId: userData.id };
+      return { followuserId, userId: currentUserId };
     } catch (error) {
       console.error(error);
       return Promise.reject(error);
@@ -152,11 +174,11 @@ export const unfollowUser = createAsyncThunk(
 export const updateUserDetails = createAsyncThunk(
   "auth/updateUserDetails",
   async (userData, { getState }) => {
-    const userstate = getState();
-    const userId = userstate.auth.user.id;
-
+    // const userstate = getState();
+    // const userId = userstate.auth.user.id;
+    const currentUserId = localStorage.getItem("userId");
     try {
-      const userRef = doc(db, "users", userId);
+      const userRef = doc(db, "users", currentUserId);
       await updateDoc(userRef, userData);
       const newUserData = await getDoc(userRef);
       return newUserData.data();
@@ -201,12 +223,21 @@ const initialState = {
 const AuthSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    setUserLogOut: (state) => {
+      console.log("hello tushar");
+      localStorage.removeItem("userId");
+      state.isUserLoggedIn = false;
+      state.user = {};
+    },
+  },
   extraReducers: {
     [SignUp.fulfilled]: (state, action) => {
+      console.log("before00000", action.payload);
       state.isUserLoggedIn = true;
       state.user = action.payload;
       state.signUpStatus = "succeed";
+      console.log("after0", state.user);
     },
     [SignUp.rejected]: (state, action) => {
       state.error = action.error.message;
@@ -244,6 +275,8 @@ const AuthSlice = createSlice({
     },
     [followUser.fulfilled]: (state, action) => {
       console.log(action.payload);
+      console.log("in foolooo", state.user);
+      console.log("hei", state.user.following);
       state.user.following = state.user.following.concat(
         action.payload.followuserId
       );
@@ -277,7 +310,7 @@ const AuthSlice = createSlice({
       state.updateUserDetailsStatus = "succeed";
     },
     [updateUserDetails.pending]: (state, action) => {
-      state.updateUserDetailsStatus = "loading";
+      state.updateUserDetailsStatus = "pending";
     },
     [getUserProfileDetails.fulfilled]: (state, action) => {
       console.log(action.payload);
@@ -285,8 +318,19 @@ const AuthSlice = createSlice({
       state.getUserDetailsStatus = "succeed";
     },
     [getUserProfileDetails.pending]: (state) => {
-      state.getUserDetailsStatus = "loading";
+      state.getUserDetailsStatus = "pending";
+    },
+    [getCurrentUser.fulfilled]: (state, action) => {
+      if (action.payload) {
+        state.isUserLoggedIn = true;
+        state.user = { ...action.payload };
+      } else {
+        state.isUserLoggedIn = false;
+        state.user = {};
+      }
     },
   },
 });
+
+export const { setUserLogOut } = AuthSlice.actions;
 export default AuthSlice.reducer;

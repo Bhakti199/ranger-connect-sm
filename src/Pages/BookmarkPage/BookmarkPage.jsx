@@ -4,13 +4,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { AiOutlineDoubleLeft } from "react-icons/ai";
 import { getAllBookmarks } from "../../redux/BookmarkSlice/BookmarkSlice";
-import { PostCard } from "../../Components";
+import { PostCard, Loader } from "../../Components";
 export const BookmarkPage = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllBookmarks());
   }, [dispatch]);
-  const bookmarks = useSelector((state) => state.bookmark.bookmarks);
+  const { bookmarks, getAllBookmarksStatus } = useSelector(
+    (state) => state.bookmark
+  );
   console.log("bookmark page", bookmarks);
   return (
     <div className="bookmark-page">
@@ -25,6 +27,7 @@ export const BookmarkPage = () => {
             <PostCard post={bookmark.post} />
           </div>
         ))}
+      {getAllBookmarksStatus === "pending" && <Loader />}
     </div>
   );
 };

@@ -4,7 +4,6 @@ import { followUser, unfollowUser } from "../../redux/AuthSlice/AuthSlice";
 import { Link } from "react-router-dom";
 import "./FollowCard.css";
 export const FollowCard = ({ user }) => {
-  const [followToggle, setFollowToggle] = useState(false);
   const userData = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
   return (

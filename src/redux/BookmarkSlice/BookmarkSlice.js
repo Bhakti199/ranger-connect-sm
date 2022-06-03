@@ -20,7 +20,7 @@ const initialState = {
   bookmarks: [],
   error: "",
   addBookmarkStatus: "idle",
-  getBookmarksStatus: "idle",
+  getAllBookmarksStatus: "idle",
   deleteBookmarkStatus: "idle",
   deletePostStatus: "idle",
 };
@@ -51,9 +51,10 @@ export const getAllBookmarks = createAsyncThunk(
     try {
       const userState = getState();
       const user = userState.auth.user;
+      const currentUserId = localStorage.getItem("userId");
       const bookmarkQuery = query(
         collectionRef,
-        where("userId", "==", user.id)
+        where("userId", "==", currentUserId)
       );
       const allBookmarksSnap = await getDocs(bookmarkQuery);
       let bookmarks = [];
@@ -61,7 +62,6 @@ export const getAllBookmarks = createAsyncThunk(
         const bookmarkData = bookmark.data();
         const postRef = await getDoc(doc(db, "posts", bookmarkData.postId));
         const userRef = await getDoc(doc(db, "users", postRef.data().userId));
-        console.log(userRef.data());
         bookmarks = [
           ...bookmarks,
           {
@@ -107,12 +107,11 @@ const BookmarkSlice = createSlice({
       state.addBookmarkStatus = "rejected";
     },
     [getAllBookmarks.fulfilled]: (state, action) => {
-      console.log(action.payload);
       state.bookmarks = action.payload;
-      state.getBookmarksStatus = "succeed";
+      state.getAllBookmarksStatus = "succeed";
     },
     [getAllBookmarks.pending]: (state, action) => {
-      state.getAllBookmarksStatus = "loading";
+      state.getAllBookmarksStatus = "pending";
     },
     [getAllBookmarks.rejected]: (state, action) => {
       state.error = action.error.message;

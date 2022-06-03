@@ -3,14 +3,17 @@ import { Link, useParams } from "react-router-dom";
 import { BsDot } from "react-icons/bs";
 import { AiOutlineDoubleLeft } from "react-icons/ai";
 import { IoSettingsOutline } from "react-icons/io5";
-import { EditProfileModal, PostCard } from "../../Components";
+import { EditProfileModal, PostCard, Loader } from "../../Components";
 import "./ProfilePage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserProfileDetails } from "../../redux/AuthSlice/AuthSlice";
+import { getAllPosts } from "../../redux/PostSlice/PostSlice";
 export const ProfilePage = () => {
   const dispatch = useDispatch();
   const [openEditProfile, setOpenEditProfile] = useState(false);
-  const user = useSelector((state) => state.auth.user);
+  const { user, updateUserDetailsStatus, getUserDetailsStatus } = useSelector(
+    (state) => state.auth
+  );
   const otherUserDetails = useSelector((state) => state.auth.otherUserDetails);
   const posts = useSelector((state) => state.post.posts);
   const { userId } = useParams();
@@ -18,13 +21,12 @@ export const ProfilePage = () => {
 
   useEffect(() => {
     dispatch(getUserProfileDetails(userId));
+    dispatch(getAllPosts());
   }, [dispatch]);
 
-  const loggedInUserPost = posts.filter(
-    (post) => post.user.username === user.username
-  );
+  const loggedInUserPost = posts.filter((post) => post.user.id === userId);
   const userPosts = posts.filter((post) => post.user.id === userId);
-
+  console.log(userPosts, "userposts");
   const currentUserProfile = userId === user.id ? user : otherUserDetails;
   console.log(otherUserDetails);
   const isFollowing = otherUserDetails?.followers?.includes(user.id);
@@ -38,7 +40,7 @@ export const ProfilePage = () => {
           <img
             src={
               currentUserProfile?.photoUrl === ""
-                ? "https://res.cloudinary.com/bhakti1801/image/upload/v1652444433/model8_rvnzuo.jpg"
+                ? "https://res.cloudinary.com/bhakti1801/image/upload/v1653925669/blank-profile-picture-g1870ca927_640_xroajd.png"
                 : currentUserProfile?.photoUrl
             }
             alt="profile"
@@ -71,8 +73,6 @@ export const ProfilePage = () => {
                 )}
               </div>
             )}
-
-            {userId === user.id && <IoSettingsOutline size={23} />}
           </div>
 
           <div className="followers">
@@ -105,10 +105,19 @@ export const ProfilePage = () => {
       <h2>
         {userId === user.id ? "My" : currentUserProfile.firstName + "'s"} Posts
       </h2>
+
       <div className="profile-posts">
-        {userId === user.id
-          ? loggedInUserPost.map((post) => <PostCard post={post} />)
-          : userPosts.map((post) => <PostCard post={post} />)}
+        {userId === user.id ? (
+          loggedInUserPost.length === 0 ? (
+            <div>0 posts</div>
+          ) : (
+            loggedInUserPost.map((post) => <PostCard post={post} />)
+          )
+        ) : loggedInUserPost.length === 0 ? (
+          <div>0 posts</div>
+        ) : (
+          userPosts.map((post) => <PostCard post={post} />)
+        )}
       </div>
       {openEditProfile && (
         <>
@@ -122,6 +131,8 @@ export const ProfilePage = () => {
           />
         </>
       )}
+      {(updateUserDetailsStatus === "pending" ||
+        getUserDetailsStatus === "pending") && <Loader />}
     </div>
   );
 };

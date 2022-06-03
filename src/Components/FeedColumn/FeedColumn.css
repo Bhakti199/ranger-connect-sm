@@ -69,6 +69,16 @@
 .menu-icon {
   display: none;
 }
+.sort-by-container {
+  display: flex;
+  gap: 5px;
+}
+.sort-by-item {
+  cursor: pointer;
+  padding: 3px 10px;
+  width: fit-content;
+  border-radius: 10px;
+}
 @media screen and (max-width: 800px) {
   .feed-column {
     width: 100%;

@@ -8,8 +8,11 @@ import { PostCard } from "../index";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllPosts, getComments } from "../../redux/PostSlice/PostSlice";
 import { getAllBookmarks } from "../../redux/BookmarkSlice/BookmarkSlice";
+import { setUserLogOut } from "../../redux/AuthSlice/AuthSlice";
+import { useNavigate } from "react-router";
 export const ExploreFeedColumn = ({ setSidebarOpen }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   useEffect(async () => {
     dispatch(getAllPosts());
     dispatch(getAllBookmarks());
@@ -39,7 +42,14 @@ export const ExploreFeedColumn = ({ setSidebarOpen }) => {
             <IoRocketOutline /> Explore
           </div>
           <div className="notify-icon">
-            <AiOutlineLogout size={30} color="white" />
+            <AiOutlineLogout
+              size={30}
+              color="white"
+              onClick={() => {
+                dispatch(setUserLogOut());
+                navigate("/");
+              }}
+            />
           </div>
         </div>
 

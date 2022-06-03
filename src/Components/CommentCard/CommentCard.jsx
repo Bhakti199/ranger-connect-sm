@@ -7,10 +7,11 @@ import { useDispatch, useSelector } from "react-redux";
 export const CommentCard = ({ postId }) => {
   const dispatch = useDispatch();
   const comments = useSelector((state) => state.post.comments);
-  const commnentsOnPost = comments.filter(
+  const user = useSelector((state) => state.auth.user);
+  const commnentsOnPost = comments?.filter(
     (comment) => comment.postId === postId
   );
-  const user = useSelector((state) => state.auth.user);
+
   return (
     <>
       {commnentsOnPost.length === 0 ? (
@@ -20,7 +21,11 @@ export const CommentCard = ({ postId }) => {
           <div className="follow-card">
             <div className="post-profile">
               <img
-                src="https://res.cloudinary.com/bhakti1801/image/upload/v1652444433/model8_rvnzuo.jpg"
+                src={
+                  comment.userData.photoUrl === ""
+                    ? "https://res.cloudinary.com/bhakti1801/image/upload/v1653925669/blank-profile-picture-g1870ca927_640_xroajd.png"
+                    : comment.userData.photoUrl
+                }
                 alt=""
                 className="responsive-img feed-profile-img"
               />

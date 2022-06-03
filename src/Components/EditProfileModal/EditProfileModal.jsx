@@ -21,7 +21,7 @@ export const EditProfileModal = ({ setOpenEditProfile, user }) => {
 
   const [photoURL, setPhotoURL] = useState(
     user?.photoUrl ||
-      "https://res.cloudinary.com/bhakti1801/image/upload/v1652444433/model8_rvnzuo.jpg"
+      "https://res.cloudinary.com/bhakti1801/image/upload/v1653925669/blank-profile-picture-g1870ca927_640_xroajd.png"
   );
 
   const onChangeHandler = (e) => {
@@ -43,13 +43,14 @@ export const EditProfileModal = ({ setOpenEditProfile, user }) => {
     const file = editUserData.photo;
     if (!file && editUserData.bio && editUserData.portfolioLink) {
       return dispatch(
-        updateUserData({
+        updateUserDetails({
           bio: editUserData.bio,
           portfolioLink: editUserData.portfolioLink,
         })
       );
     }
     const id = Math.random().toString(36).substring(2, 15);
+    console.log("profile img", file, file.name);
     const fileNameStr = file.name.split(".");
     const extension = fileNameStr[fileNameStr.length - 1];
     const filePath = `profile/${id}.${extension}`;

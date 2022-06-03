@@ -3,13 +3,15 @@
   top: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 50%;
-  height: 35%;
+  width: 40%;
+  min-height: 25%;
   background-color: white;
   z-index: 6;
   border-radius: 1.5rem;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
   align-items: center;
 }
 .create-post-container {
@@ -22,6 +24,7 @@
 }
 .post-input {
   width: 90%;
+  height: 3rem;
   resize: none;
   outline: none;
 }
@@ -50,4 +53,41 @@
 .post-btn {
   color: var(--white-color);
   background: linear-gradient(180deg, var(--pink-light), var(--pink-dark));
+}
+.create-post-img {
+  height: 10rem;
+  width: 25rem;
+}
+.responsive-post-img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+@media screen and (max-width: 800px) {
+  .create-post {
+    top: 30%;
+    left: 50%;
+    transform: translate(-20%, -30%);
+    width: 20rem;
+  }
+  .editing-post {
+    transform: translate(-50%, -50%);
+  }
+  .post-input {
+    width: 80%;
+  }
+  .post-btn-container {
+    gap: 5px;
+  }
+  .post-btn,
+  .cancel-btn {
+    padding: 3px 6px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  .create-post-img {
+    width: 10rem;
+    height: 10rem;
+  }
 }

@@ -8,11 +8,12 @@ import "./Auth.css";
 export const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const [seePassword, setSeePassword] = useState(false);
   const logInStatus = useSelector((state) => state.auth.logInStatus);
   const [loginDetails, setLoginDetails] = useState({
-    email: "bhakti@gmail.com",
-    password: "1234567",
+    email: "test@gmail.com",
+    password: "tester",
   });
 
   const logInHandler = async (e) => {

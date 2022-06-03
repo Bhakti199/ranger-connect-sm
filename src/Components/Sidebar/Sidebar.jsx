@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import "./Sidebar.css";
 import {
   IoHomeOutline,
@@ -13,8 +13,13 @@ import { useDispatch, useSelector } from "react-redux";
 
 export const Sidebar = ({ setSidebarOpen }) => {
   const [openCreatePost, setOpenCreatePost] = useState(false);
-  const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
+  const getStyleOfActiveLink = ({ isActive }) => ({
+    color: isActive && "white",
+    backgroundColor: isActive && "var(--blue-lightest)",
+    padding: "5px",
+    borderRadius: "10px",
+  });
   return (
     <>
       <div className="sidebar">
@@ -35,42 +40,57 @@ export const Sidebar = ({ setSidebarOpen }) => {
         </div>
         <div className="sidebar-menu-text">Menu</div>
         <div className="sidebar-items-container">
-          <Link to="/my-feed" className="sidebar-item link">
+          <NavLink
+            style={getStyleOfActiveLink}
+            to="/my-feed"
+            className="sidebar-item link"
+          >
             <IoHomeOutline size={22} />
             <span className="sidebar-item-text">My feed</span>
-          </Link>
-          <Link to="/explore" className="sidebar-item link">
+          </NavLink>
+          <NavLink
+            style={getStyleOfActiveLink}
+            to="/explore"
+            className="sidebar-item link"
+          >
             <IoRocketOutline size={22} />
             <span className="sidebar-item-text">Explore</span>
-          </Link>
-          <Link to={`/profile/${user.id}`} className="sidebar-item link">
+          </NavLink>
+          <NavLink
+            style={getStyleOfActiveLink}
+            to={`/profile/${user.id}`}
+            className="sidebar-item link"
+          >
             <BsPerson size={24} />
             <span className="sidebar-item-text">Profile</span>
-          </Link>
+          </NavLink>
 
-          <Link to="/search" className="sidebar-item sidebar-search-icon link">
+          <NavLink
+            style={getStyleOfActiveLink}
+            to="/search"
+            className="sidebar-item sidebar-search-icon link"
+          >
             <BsSearch size={22} />
             <span className="sidebar-item-text">Search</span>
-          </Link>
-          <Link to="/bookmarks" className="sidebar-item link">
+          </NavLink>
+          <NavLink
+            style={getStyleOfActiveLink}
+            to="/bookmarks"
+            className="sidebar-item link"
+          >
             <BsBookmark size={20} />
             <span className="sidebar-item-text">Bookmarks</span>
-          </Link>
-          <div className="sidebar-item">
-            <IoSettingsOutline size={22} />
-            <span className="sidebar-item-text">Settings</span>
-          </div>
+          </NavLink>
+
+          <button
+            className="sidebar-post-btn btn-cta"
+            onClick={() => setOpenCreatePost(true)}
+          >
+            Post
+          </button>
         </div>
-        <button
-          className="sidebar-post-btn btn-cta"
-          onClick={() => setOpenCreatePost(true)}
-        >
-          Post
-        </button>
-        <button className="sidebar-post-btn-mbl">
-          <IoAdd color="white" size={25} />
-        </button>
       </div>
+
       {openCreatePost && <CreatePost setOpenCreatePost={setOpenCreatePost} />}
     </>
   );
