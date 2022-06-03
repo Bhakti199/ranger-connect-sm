@@ -7,14 +7,13 @@ import "./Auth.css";
 
 export const SignUpPage = () => {
   const [seePassword, setSeePassword] = useState(false);
-  const signUpStatus = useSelector((state) => state.auth.status);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const signUpStatus = useSelector((state) => state.auth.signUpStatus);
 
   const SignUpHandler = async (event) => {
     event.preventDefault();
     const [first, last, username, email, password] = event.target;
-    const signUpStatus = useSelector((state) => state.post.signUpStatus);
     let firstName = first.value,
       lastName = last.value,
       userName = username.value,
