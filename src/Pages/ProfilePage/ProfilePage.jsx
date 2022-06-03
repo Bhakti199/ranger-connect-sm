@@ -73,8 +73,6 @@ export const ProfilePage = () => {
                 )}
               </div>
             )}
-
-            {userId === user.id && <IoSettingsOutline size={23} />}
           </div>
 
           <div className="followers">
