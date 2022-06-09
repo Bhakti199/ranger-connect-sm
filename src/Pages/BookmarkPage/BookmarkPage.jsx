@@ -13,7 +13,7 @@ export const BookmarkPage = () => {
   const { bookmarks, getAllBookmarksStatus } = useSelector(
     (state) => state.bookmark
   );
-  console.log("bookmark page", bookmarks);
+
   return (
     <div className="bookmark-page">
       <Link to="/my-feed">

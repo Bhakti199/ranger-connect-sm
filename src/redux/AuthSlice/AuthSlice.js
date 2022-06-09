@@ -151,8 +151,6 @@ export const followUser = createAsyncThunk(
 export const unfollowUser = createAsyncThunk(
   "auth/unfollowUser",
   async (followuserId, { getState }) => {
-    // const userstate = getState();
-    // const userData = userstate.auth.user;
     const currentUserId = localStorage.getItem("userId");
     try {
       const userDataRef = doc(db, "users", currentUserId);
@@ -174,8 +172,6 @@ export const unfollowUser = createAsyncThunk(
 export const updateUserDetails = createAsyncThunk(
   "auth/updateUserDetails",
   async (userData, { getState }) => {
-    // const userstate = getState();
-    // const userId = userstate.auth.user.id;
     const currentUserId = localStorage.getItem("userId");
     try {
       const userRef = doc(db, "users", currentUserId);
@@ -192,12 +188,9 @@ export const updateUserDetails = createAsyncThunk(
 export const getUserProfileDetails = createAsyncThunk(
   "auth/getUserProfileDetails",
   async (userId) => {
-    console.log(userId);
     try {
       const userRef = doc(db, "users", userId);
-      console.log(userRef);
       const userData = await getDoc(userRef);
-      console.log(userData.id);
       return userData.data();
     } catch (error) {
       console.error(error);
@@ -225,7 +218,6 @@ const AuthSlice = createSlice({
   initialState,
   reducers: {
     setUserLogOut: (state) => {
-      console.log("hello tushar");
       localStorage.removeItem("userId");
       state.isUserLoggedIn = false;
       state.user = {};
@@ -233,11 +225,9 @@ const AuthSlice = createSlice({
   },
   extraReducers: {
     [SignUp.fulfilled]: (state, action) => {
-      console.log("before00000", action.payload);
       state.isUserLoggedIn = true;
       state.user = action.payload;
       state.signUpStatus = "succeed";
-      console.log("after0", state.user);
     },
     [SignUp.rejected]: (state, action) => {
       state.error = action.error.message;
@@ -274,9 +264,6 @@ const AuthSlice = createSlice({
       state.getUserStatus = "pending";
     },
     [followUser.fulfilled]: (state, action) => {
-      console.log(action.payload);
-      console.log("in foolooo", state.user);
-      console.log("hei", state.user.following);
       state.user.following = state.user.following.concat(
         action.payload.followuserId
       );
@@ -287,7 +274,6 @@ const AuthSlice = createSlice({
       );
     },
     [unfollowUser.fulfilled]: (state, action) => {
-      console.log(action.payload);
       state.user = {
         ...state.user,
         following: state.user.following.filter(
@@ -313,7 +299,6 @@ const AuthSlice = createSlice({
       state.updateUserDetailsStatus = "pending";
     },
     [getUserProfileDetails.fulfilled]: (state, action) => {
-      console.log(action.payload);
       state.otherUserDetails = action.payload;
       state.getUserDetailsStatus = "succeed";
     },

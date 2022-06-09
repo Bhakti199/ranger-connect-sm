@@ -131,12 +131,9 @@ const BookmarkSlice = createSlice({
       state.deleteBookmarkStatus = "loading";
     },
     [deletePost.fulfilled]: (state, action) => {
-      console.log(action.payload);
       state.bookmarks = state.bookmarks.filter((bookmark) => {
-        console.log(bookmark);
         return bookmark.post.id !== action.payload;
       });
-      console.log(current(state));
       state.deletePostStatus = "succeed";
     },
     [likedUserPost.fulfilled]: (state, action) => {

@@ -3,7 +3,7 @@
 
 body,
 html {
-  margin: 0;
+  margin: 0 !important;
   padding: 0;
   font-family: "Raleway", sans-serif;
   background-color: var(--off-white);
@@ -17,14 +17,12 @@ html {
   --red-color: #dc2626;
   --blue-lightest: #bbb0e8;
   --blue-dark: #80789f;
-  /* --blue-lighter: */
   --peach-dark: #0a0808;
   --peach-light: #ffcdc7;
   --mint-dark: #33d9d2;
   --mint-light: #88f1ec;
   --orange-dark: #f8ab4a;
   --orange-light: #f9c179;
-
   --pink-dark: #fd71aa;
   --pink-light: #ff98cd;
   --pink-lightest: #fffcfe;

@@ -32,7 +32,6 @@ export const FollowCard = ({ user }) => {
         <button
           className="follow-btn"
           onClick={() => {
-            console.log(user.id);
             dispatch(followUser(user.id));
           }}
         >

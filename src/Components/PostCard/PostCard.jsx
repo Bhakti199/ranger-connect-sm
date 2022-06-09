@@ -74,7 +74,7 @@ export const PostCard = ({ post }) => {
             <div className="post-photo">
               <img
                 src={post.postPhotoUrl}
-                alt=""
+                alt="post image"
                 className="responsive-post-img"
               />
             </div>

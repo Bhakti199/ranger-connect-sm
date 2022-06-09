@@ -18,6 +18,7 @@ export const CreatePost = ({
   post,
   setEditingPost,
   editingPost,
+  mblViewPostBtn,
 }) => {
   const dispatch = useDispatch();
   let initialInput = post ? post.postInput : "";
@@ -140,7 +141,11 @@ export const CreatePost = ({
         className="create-post-container"
         onClick={() => setOpenCreatePost((prevValue) => !prevValue)}
       ></div>
-      <div className={`create-post ${editingPost && "editing-post"}`}>
+      <div
+        className={`create-post ${
+          (editingPost || mblViewPostBtn) && "editing-post"
+        }`}
+      >
         <textarea
           name="content"
           className="post-input"

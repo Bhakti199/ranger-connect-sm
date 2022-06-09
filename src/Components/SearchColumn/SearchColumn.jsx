@@ -21,7 +21,6 @@ export const SearchColumn = () => {
     }
   }, [dispatch, user]);
 
-  console.log(users);
   return (
     <div className="search-column">
       <div className="search-tab">

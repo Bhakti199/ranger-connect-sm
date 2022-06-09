@@ -24,7 +24,6 @@ export const SearchPage = () => {
     }
   }, [dispatch, user]);
 
-  console.log(users);
   return (
     <div className=" search-page">
       <Link to="/my-feed">

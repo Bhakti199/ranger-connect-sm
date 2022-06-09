@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { BsDot } from "react-icons/bs";
 import { AiOutlineDoubleLeft } from "react-icons/ai";
-import { IoSettingsOutline } from "react-icons/io5";
 import { EditProfileModal, PostCard, Loader } from "../../Components";
 import "./ProfilePage.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,18 +16,13 @@ export const ProfilePage = () => {
   const otherUserDetails = useSelector((state) => state.auth.otherUserDetails);
   const posts = useSelector((state) => state.post.posts);
   const { userId } = useParams();
-  console.log(userId);
-
   useEffect(() => {
     dispatch(getUserProfileDetails(userId));
     dispatch(getAllPosts());
   }, [dispatch]);
-
   const loggedInUserPost = posts.filter((post) => post.user.id === userId);
   const userPosts = posts.filter((post) => post.user.id === userId);
-  console.log(userPosts, "userposts");
   const currentUserProfile = userId === user.id ? user : otherUserDetails;
-  console.log(otherUserDetails);
   const isFollowing = otherUserDetails?.followers?.includes(user.id);
   return (
     <div className="profile-page">
@@ -116,7 +110,11 @@ export const ProfilePage = () => {
         ) : loggedInUserPost.length === 0 ? (
           <div>0 posts</div>
         ) : (
-          userPosts.map((post) => <PostCard post={post} />)
+          userPosts.map((post, index) => (
+            <div key={index}>
+              <PostCard post={post} />
+            </div>
+          ))
         )}
       </div>
       {openEditProfile && (
