@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
+  query,
+  orderBy,
   addDoc,
   collection,
   doc,
@@ -26,7 +28,6 @@ export const initialState = {
 
 export const addPost = createAsyncThunk("post/addPost", async (postData) => {
   try {
-    console.log(postData);
     const postRef = await addDoc(collection(db, "posts"), {
       ...postData,
       likes: [],
@@ -34,15 +35,7 @@ export const addPost = createAsyncThunk("post/addPost", async (postData) => {
     await updateDoc(postRef, { id: postRef.id });
     const postSnap = await getDoc(postRef);
     const post = postSnap.data();
-    console.log(post);
     const userSnap = await getDoc(doc(db, "users", post.userId));
-    console.log(userSnap.data());
-    console.log({ ...post, id: postSnap.id, user: userSnap.data() });
-    console.log("from call", {
-      ...post,
-      id: postSnap.id,
-      user: userSnap.data(),
-    });
     return { ...post, id: postSnap.id, user: userSnap.data() };
   } catch (error) {
     console.error(error);
@@ -52,11 +45,14 @@ export const addPost = createAsyncThunk("post/addPost", async (postData) => {
 
 export const getAllPosts = createAsyncThunk("post/getAllPosts", async () => {
   try {
-    const allPostsSnap = await getDocs(collection(db, "posts"));
+    const queryPost = query(
+      collection(db, "posts"),
+      orderBy("createdAt", "desc")
+    );
+    const allPostsSnap = await getDocs(queryPost);
     let posts = [];
     for await (const post of allPostsSnap.docs) {
       const postData = post.data();
-      console.log(postData);
       const userRef = await getDoc(doc(db, "users", postData.userId));
       posts = [...posts, { user: userRef.data(), ...postData }];
     }
@@ -141,7 +137,6 @@ export const disLikedUserPost = createAsyncThunk(
 export const addComments = createAsyncThunk(
   "post/addComments",
   async ({ postId, comment }, { getState }) => {
-    console.log("Comment", comment, postId);
     const userState = getState();
     const userData = userState.auth.user;
     try {
@@ -192,9 +187,8 @@ const PostSlice = createSlice({
   reducers: {},
   extraReducers: {
     [addPost.fulfilled]: (state, action) => {
-      state.posts.push(action.payload);
+      state.posts.unshift(action.payload);
       state.statusAddPost = "succeed";
-      console.log("post action", action.payload);
     },
     [addPost.rejected]: (state, action) => {
       state.error = action.error.message;

@@ -79,6 +79,9 @@
   width: fit-content;
   border-radius: 10px;
 }
+.add-post-btn-mbl {
+  display: none;
+}
 @media screen and (max-width: 800px) {
   .feed-column {
     width: 100%;
@@ -88,5 +91,15 @@
   }
   .menu-icon {
     display: flex;
+  }
+  .add-post-btn-mbl {
+    padding: 5px 7px;
+    display: inline;
+    position: fixed;
+    right: 1rem;
+    bottom: 2rem;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(180deg, var(--pink-light), var(--pink-dark));
   }
 }

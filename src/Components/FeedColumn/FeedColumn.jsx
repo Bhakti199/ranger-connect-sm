@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import "./FeedColumn.css";
 import { Link, useNavigate } from "react-router-dom";
-import { AiOutlineLogout } from "react-icons/ai";
+import { AiOutlineLogout, AiOutlinePlus } from "react-icons/ai";
 import { RiMenuLine } from "react-icons/ri";
 import { PostCard } from "../index";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllPosts, getComments } from "../../redux/PostSlice/PostSlice";
 import { getAllBookmarks } from "../../redux/BookmarkSlice/BookmarkSlice";
 import { setUserLogOut } from "../../redux/AuthSlice/AuthSlice";
+import { CreatePost } from "../CreatePost/CreatePost";
 export const FeedColumn = ({ setSidebarOpen }) => {
+  const [openCreatePost, setOpenCreatePost] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(async () => {
@@ -139,6 +141,18 @@ export const FeedColumn = ({ setSidebarOpen }) => {
             </div>
           ))}
       </div>
+      <button
+        className="add-post-btn-mbl"
+        onClick={() => setOpenCreatePost(true)}
+      >
+        <AiOutlinePlus size={30} color="var(--white-color)" title="add post" />
+      </button>
+      {openCreatePost && (
+        <CreatePost
+          setOpenCreatePost={setOpenCreatePost}
+          mblViewPostBtn={true}
+        />
+      )}
     </div>
   );
 };

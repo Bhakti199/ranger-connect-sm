@@ -12,8 +12,8 @@ export const LoginPage = () => {
   const [seePassword, setSeePassword] = useState(false);
   const logInStatus = useSelector((state) => state.auth.logInStatus);
   const [loginDetails, setLoginDetails] = useState({
-    email: "test@gmail.com",
-    password: "tester",
+    email: "",
+    password: "",
   });
 
   const logInHandler = async (e) => {
@@ -77,6 +77,17 @@ export const LoginPage = () => {
         <button type="submit" className="login-form-btn btn-cta">
           {logInStatus === "pending" ? "LOGGING..." : "LOGIN"}
         </button>
+        <div
+          className="login-guest"
+          onClick={() => {
+            setLoginDetails({
+              email: "test@gmail.com",
+              password: "tester",
+            });
+          }}
+        >
+          Login as a guest
+        </div>
         <p className="register-text">
           Don't have an account?{" "}
           <Link to="/sign-up" className="link">

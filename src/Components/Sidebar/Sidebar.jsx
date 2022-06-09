@@ -1,12 +1,7 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import "./Sidebar.css";
-import {
-  IoHomeOutline,
-  IoRocketOutline,
-  IoSettingsOutline,
-  IoAdd,
-} from "react-icons/io5";
+import { IoHomeOutline, IoRocketOutline } from "react-icons/io5";
 import { BsPerson, BsBookmark, BsSearch, BsX } from "react-icons/bs";
 import { CreatePost } from "../index";
 import { useDispatch, useSelector } from "react-redux";
